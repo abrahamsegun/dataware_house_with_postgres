@@ -1,0 +1,98 @@
+/*
+========
+DON'T RUN THIS CODE, IT CREATES AND DELETE EXISTING TABLES .
+DONT RUN
+DONT RUN
+DONT RUN
+
+
+========
+DROP TABLE IF EXISTS bronze.crm_cust_info
+======== Dont run this code only if needed if is expensive 
+THis code create customer information id they exist alreadty 
+For the Marital_status 
+S- single, M- Married, D- Divorced, W-Widowed
+*/
+
+-- DROP TABLE IF EXISTS bronze.crm_cust_info
+
+CREATE TABLE bronze.crm_cust_info (
+    cst_id BIGINT PRIMARY KEY, 
+    cst_key VARCHAR(50) UNIQUE, 
+    cst_firstname VARCHAR(50) NOT NULL, 
+    cst_lastname VARCHAR(50) NOT NULL,
+    cst_marital_status VARCHAR(1) CHECK (cst_marital_status IN ('S', 'M', 'D', 'W')) DEFAULT 'S',
+    cst_gndr CHAR(1) CHECK (cst_gndr IN ('M', 'F')) NOT NULL,  
+    cst_create_date DATE 
+
+)
+
+DROP TABLE IF EXISTS bronze.crm_prd_info;
+
+CREATE TABLE bronze.crm_prd_info (
+    prd_id INT PRIMARY KEY, 
+    prd_nm VARCHAR(25) NOT NULL, 
+    prd_cost DECIMAL(10,2) NOT NULL,
+    prd_line VARCHAR(3) NOT NULL, 
+    prd_start_dt DATE NOT NULL,  
+    prd_end_dt DATE  
+);
+
+DROP TABLE IF EXISTS bronze.crm_sales_details;
+
+CREATE TABLE bronze.crm_sales_details (
+    sls_ord_num VARCHAR(25) NOT NULL primary key, 
+    sls_prd_key VARCHAR(25) NOT NULL, 
+    sls_cust_id BIGINT NOT NULL,
+    sls_order_dt DATE NOT NULL, 
+    sls_ship_dt DATE NOT NULL,  
+    sls_due_dt DATE NOT NULL,
+	sls_sales int not null,
+	sls_quantity int not null, 
+	sls_price DECIMAL(10,2) NOT NULL
+	
+);
+
+DROP TABLE IF EXISTS bronze.erp_CUST_AZ12;
+
+CREATE TABLE bronze.erp_CUST_AZ12 (
+    CID VARCHAR(30) NOT NULL primary key, 
+    BDATE DATE NOT NULL,
+	GEN VARCHAR(10) NOT NULL
+);
+
+
+DROP TABLE IF EXISTS bronze.erp_LOC_A101;
+
+CREATE TABLE bronze.erp_LOC_A101 (
+    CID VARCHAR(30) NOT NULL primary key, 
+    CNTRY VARCHAR(50) NOT NULL
+);
+
+DROP TABLE IF EXISTS bronze.erp_PX_CAT_G1V2;
+
+CREATE TABLE bronze.erp_PX_CAT_G1V2 (
+    ID VARCHAR(10) NOT NULL primary key, 
+    CAT VARCHAR(50) NOT NULL,
+	SUBCAT VARCHAR(50) NOT NULL,
+	MAINTENANCE VARCHAR(10) NOT NULL
+);
+
+
+select * from bronze.crm_cust_info;
+
+/* 
+LIST OF ALL TABLE UNDER BRONZE
+*/
+-- SELECT table_name 
+-- FROM information_schema.tables 
+-- WHERE table_schema = 'bronze';
+
+/* 
+ALL TABLE UNDER BRONZE INFO
+*/
+
+SELECT table_name, column_name, data_type, is_nullable, column_default
+FROM information_schema.columns
+WHERE table_schema = 'bronze'
+ORDER BY table_name, ordinal_position;
